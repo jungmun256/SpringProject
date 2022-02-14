@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardDAO">
+
+	<resultMap type="board" id="boardResult">
+		<id property="bid" column="BID" />
+		<result property="title" column="TITLE" />
+		<result property="writer" column="WRITER" />
+		<result property="content" column="CONTENT" />
+		<result property="bdate" column="BDATE" />
+		<result property="cnt" column="CNT" />
+		<result property="filepath" column="FILEPATH" />
+	</resultMap>
+
+	<insert id="insertBoard" parameterType="board">
+		insert into sboard(bid,title,writer,content,filepath) values((select nvl(max(bid),0)+1 from sboard),#{title},#{writer},#{content},#{filepath})
+	</insert>
+
+	<select id="selectOne" parameterType="board" resultMap="boardResult">
+		SELECT * FROM SBOARD WHERE BID=#{bid}
+	</select>
+
+
+	<select id="selectAll" parameterType="board" resultMap="boardResult">
+		SELECT * FROM SBOARD WHERE 1=1
+		<if test="searchCondition == 'title'">
+			AND TITLE LIKE '%'||#{searchContent}||'%'
+		</if>
+		<if test="searchCondition == 'writer'">
+			AND WRITER LIKE '%'||#{searchContent}||'%'
+		</if>
+		ORDER BY BID DESC
+	</select>
+
+
+	<update id="updateBoard" parameterType="board">
+		UPDATE SBOARD SET TITLE=#{title}, CONTENT=#{content} WHERE BID=#{bid}
+	</update>
+
+	<delete id="deleteBoard" parameterType="board">
+		DELETE FROM SBOARD WHERE BID=#{bid}
+	</delete>
+
+</mapper>
