@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+
+<configuration>  
+   <typeAliases>
+      <typeAlias alias="contact" type="com.test.app.contact.ContactVO" />
+      <typeAlias alias="member" type="com.test.app.member.MemberVO" />
+      <typeAlias alias="notice" type="com.test.app.notice.NoticeVO" />
+      <typeAlias alias="product" type="com.test.app.product.ProductVO" />
+   </typeAliases>
+   
+   
+   <!-- Sql Mapper 설정 -->
+   <mappers>
+      <mapper resource="mappings/contact-mapping.xml" />
+      <mapper resource="mappings/member-mapping.xml" />
+      <mapper resource="mappings/notice-mapping.xml" />
+      <mapper resource="mappings/product-mapping.xml" />
+   </mappers>
+   
+</configuration>

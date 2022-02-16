@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ContactDAO">
+
+	<resultMap type="contact" id="contactResult">
+		<id property="msgno" column="MSGNO" />
+		<result property="msgname" column="MSGNAME" />
+		<result property="msgemail" column="MSGEMAIL" />
+		<result property="msgtext" column="MSGTEXT" />
+	</resultMap>
+
+	<insert id="insertContact" parameterType="contact">
+		INSERT INTO CONTACT VALUES(LPAD(contact_seq.NEXTVAL,2,0), #{msgname}, #{msgemail}, #{msgtext})
+	</insert>
+	
+	<delete id="deleteContact" parameterType="contact">
+		DELETE FROM CONTACT WHERE MSGNO=#{msgno}
+	</delete>
+	
+	<select id="selectOne" parameterType="contact" resultMap="contactResult">
+		SELECT * FROM CONTACT WHERE MSGNO=#{msgno}
+	</select>
+	
+	
+	<select id="selectAll" parameterType="contact" resultMap="contactResult">
+		SELECT * FROM CONTACT WHERE 1=1
+		<if test="searchCondition == 'msgname'">
+		 AND MSGNAME LIKE '%'||#{searchword}||'%'
+		</if>
+		<if test="searchCondition == 'msgtext'">
+		 AND MSGTEXT LIKE '%'||#{searchword}||'%'
+		</if>
+		ORDER BY MSGNO DESC
+	</select>
+	
+	
+</mapper>
+
+

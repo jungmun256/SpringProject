@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	
+<mapper namespace="ProductDAO">
+
+	<resultMap type="product" id="productResult">
+		<id property="pno" column="PNO" />
+		<result property="pcode" column="PCODE" />
+		<result property="pimg_src" column="PIMG_SRC" />
+		<result property="pbrand" column="PBRAND" />
+		<result property="pname" column="PNAME" />
+		<result property="pprice" column="PPRICE" />
+		<result property="pdiscount" column="PDISCOUNT" />
+		<result property="pdetail" column="PDETAIL" />
+		<result property="porigin" column="PORIGIN" />
+		<result property="pperiod" column="PPERIOD" />
+		<result property="psales" column="PSALES" />
+		<result property="pstock" column="PSTOCK" />
+	</resultMap>
+	
+	
+	<insert id="insertProduct" parameterType="product">
+		INSERT INTO PRODUCT(PNO, PCODE, PIMG_SRC, PBRAND, PNAME, PPRICE, PDETAIL, PORIGIN, PPERIOD, PSTOCK) VALUES(LPAD(PROD_SEQ.NEXTVAL, 3, 0), #{pcode}, #{pimg_src}, #{pbrand}, #{pname}, #{pprice}, #{pdetail}, #{porigin}, #{pperiod}, #{pstock})
+	</insert>
+	
+	
+	<update id="updateProduct" parameterType="product">
+		UPDATE PRODUCT SET PCODE=#{pcode}, PIMG_SRC=#{pimg_src}, PBRAND=#{pbrand}, PNAME=#{pname}, PPRICE=#{pprice}, PDETAIL=#{pdetail}, PORIGIN=#{porigin}, PPERIOD=#{pperiod}, PSTOCK=#{pstock} WHERE PNO=#{pno}
+	</update>
+	
+	
+	<delete id="deleteProduct" parameterType="product">
+		DELETE FROM PRODUCT WHERE PNO=#{pno}
+	</delete>
+	
+	<select id="selectOne" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT WHERE PNO=#{pno}
+	</select>
+	
+	
+	<select id="selectAll" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT ORDER BY PNO DESC
+	</select>
+	
+	<select id="selectTOP" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT ORDER BY PSALES DESC
+	</select>
+	
+	<select id="selectAllHP" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT ORDER BY PPRICE DESC
+	</select>
+	
+	<select id="selectAllLP" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT ORDER BY PPRICE
+	</select>
+	
+	<select id="selectAlmostSoldOut" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT ORDER BY PSTOCK
+	</select>
+	
+	<select id="selectTOPPcode" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT WHERE PCODE=#{pcode} ORDER BY PSALES DESC
+	</select>
+	
+	
+	<select id="selectAllHPPcode" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT WHERE PCODE=#{pcode} ORDER BY PPRICE DESC
+	</select>
+	
+	<select id="selectAllLPPcode" parameterType="product" resultMap="productResult">
+		 SELECT * FROM PRODUCT WHERE PCODE=#{pcode} ORDER BY PPRICE
+	</select>
+	
+	<select id="selectAlmostSoldOutPcode" parameterType="product" resultMap="productResult">
+		 SELECT * FROM PRODUCT WHERE PCODE=#{pcode} ORDER BY PSTOCK
+	</select>
+	
+	<select id="filterPcode" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT WHERE PCODE=#{pcode}
+	</select>
+	
+	<select id="searchPname" parameterType="product" resultMap="productResult">
+		SELECT * FROM PRODUCT WHERE PNAME LIKE '%'||#{searchword}||'%'
+	</select>
+	
+	<select id="selectTOP6" parameterType="product" resultMap="productResult">
+		<![CDATA[
+			SELECT * FROM (SELECT * FROM PRODUCT ORDER BY PSALES DESC) WHERE ROWNUM <= 6
+		]]>
+	</select>
+	
+	<select id="selectAllHP6" parameterType="product" resultMap="productResult">
+		<![CDATA[
+			SELECT * FROM (SELECT * FROM PRODUCT ORDER BY PPRICE DESC) WHERE ROWNUM <=6
+		]]>
+	</select>
+	
+	<select id="selectAllLP6" parameterType="product" resultMap="productResult">
+		<![CDATA[
+			SELECT * FROM (SELECT * FROM PRODUCT ORDER BY PPRICE) WHERE ROWNUM <=6
+		]]>
+	</select>
+	
+	
+	<select id="selectAlmostSoldOut6" parameterType="product" resultMap="productResult">
+		<![CDATA[
+			SELECT * FROM (SELECT * FROM PRODUCT ORDER BY PSTOCK) WHERE ROWNUM <=6
+		]]>
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="NoticeDAO">
+	<resultMap type="notice" id="noticeResult">
+		<id property="nidx" column="NIDX" />
+		<result property="ntitle" column="NTITLE" />
+		<result property="ncont" column="NCONT" />
+		<result property="writer" column="WRITER" />
+	</resultMap>
+
+	<insert id="insertNotice" parameterType="notice">
+		INSERT INTO NOTICE VALUES(LPAD(notice_seq.NEXTVAL, 2, 0), #{ntitle}, #{ncont}, #{writer})
+	</insert>
+
+	<update id="updateNotice" parameterType="notice">
+		UPDATE NOTICE SET NTITLE=#{ntitle}, NCONT=#{ncont} WHERE NIDX=#{nidx}
+	</update>
+
+	<delete id="deleteNotice" parameterType="notice">
+		DELETE FROM NOTICE WHERE NIDX=#{nidx}
+	</delete>
+
+	<select id="selectOne" parameterType="notice" resultMap="noticeResult">
+		SELECT * FROM NOTICE WHERE NIDX=#{nidx}
+	</select>
+	
+	<select id="selectAll" parameterType="notice" resultMap="noticeResult">
+		SELECT * FROM NOTICE WHERE 1=1
+		<if test="searchCondition == 'ntitle'">
+		 AND NTITLE LIKE '%'||#{searchword}||'%'
+		</if>
+		<if test="searchCondition == 'ncont'">
+		 AND NCONT LIKE '%'||#{searchword}||'%'
+		</if>
+		ORDER BY NIDX DESC
+	</select>
+
+</mapper>
+
+
+	

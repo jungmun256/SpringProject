@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	
+<mapper namespace="MemberDAO">
+
+	<resultMap type="member" id="memberResult">
+		<id property="mno" column="MNO" />
+		<result property="mid" column="MID" />
+		<result property="mpw" column="MPW" />
+		<result property="mname" column="MNAME" />
+		<result property="mgender" column="MGENDER" />
+		<result property="mbirth" column="MBIRTH" />
+		<result property="maddr_zipcode" column="MADDR_ZIPCODE" />
+		
+		<result property="maddr_street" column="MADDR_STREET" />
+		<result property="maddr_detail" column="MADDR_DETAIL" />
+		<result property="maddr_etc" column="MADDR_ETC" />
+		<result property="mtel" column="MTEL" />
+		<result property="memail" column="MEMAIL" />
+		<result property="mrole" column="MROLE" />
+	</resultMap>
+	
+	
+	<insert id="insertMember" parameterType="member">
+		INSERT INTO MEMBER(MNO, MID, MPW, MNAME, MGENDER, MBIRTH, MADDR_ZIPCODE, MADDR_STREET, MADDR_DETAIL, MADDR_ETC, MTEL, MEMAIL) VALUES('MEM' || LPAD(member_seq.NEXTVAL, 3, 0),#{mid},#{mpw},#{mname},#{mgender},#{mbirth},#{maddr_zipcode},#{maddr_street},#{maddr_detail},#{maddr_etc},#{mtel},#{memail})
+	</insert>
+	
+	<select id="selectOne" parameterType="member" resultMap="memberResult">
+		SELECT * FROM MEMBER WHERE MID=#{mid}
+	</select>
+	
+	
+	<select id="loginMember" parameterType="member" resultMap="memberResult">
+		SELECT * FROM MEMBER WHERE MID=#{mid} AND MPW=#{mpw}
+	</select>
+
+	<update id="updateMember" parameterType="member">
+		UPDATE MEMBER SET MNAME=#{mname}, MGENDER=#{mgender},MBIRTH =#{mbirth}, MADDR_ZIPCODE=#{maddr_zipcode}, MADDR_STREET=#{maddr_street}, MADDR_DETAIL=#{maddr_detail}, MADDR_ETC=#{maddr_etc}, MTEL=#{mtel},MEMAIL=#{memail} WHERE MID=#{mid}	
+	</update>
+
+	<delete id="deleteMember" parameterType="member">
+		DELETE FROM MEMBER WHERE MID=#{mid} AND MPW=#{mpw}
+	</delete>
+
+
+</mapper>
+
+
+
+
+
+
+
+
